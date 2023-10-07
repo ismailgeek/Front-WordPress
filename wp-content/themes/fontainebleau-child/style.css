@@ -1,0 +1,27 @@
+/**
+Theme Name: fontainebleau child
+Author: fontainebleau
+Author URI: https://fontainebleau.cityjunction.com/
+Description: none
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: fontainebleau-child
+Template: astra
+*/
+.eael-elements-slider-display-table {
+    background: rgb(0 0 0 / 23%);
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.home section#logo-section, .home section#menu-section{
+    display: none;
+}
+.fixed-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+	background-color:#fff;
+}
