@@ -6,11 +6,14 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteBase /wp-front/
+RewriteBase /
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /wp-front/index.php [L]
+RewriteRule . /index.php [L]
 </IfModule>
 
 # END WordPress
+<IfModule mod_rewrite.c>
+SetEnvIf X-Forwarded-PROTO "https" HTTPS=on
+</IfModule>
