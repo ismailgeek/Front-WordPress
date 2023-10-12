@@ -10,18 +10,28 @@ Text Domain: fontainebleau-child
 Template: astra
 */
 .eael-elements-slider-display-table {
-    background: rgb(0 0 0 / 23%);
-    height: 100%;
-    display: flex;
-    align-items: center;
+  background: rgb(0 0 0 / 23%);
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
-.home section#logo-section, .home section#menu-section{
-    display: none;
+.home section#logo-section,
+.home section#menu-section {
+  display: none;
 }
 .fixed-menu {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-	background-color:#fff;
+  background-color: #fff;
+}
+
+#card-section {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#card-section .card-item {
+  flex: 50%;
 }
