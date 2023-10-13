@@ -7,12 +7,12 @@ var cardElement = `
         </div>
         <h6 class="card-price">{{% PRICE %}} / month</h6>
         <h3><a class="card-city" href="{{% URL %}}">{{% TITLE %}}</a></h3>
-        <div>
+        <div class="sub-header">
         <i aria-hidden="true" class="far fa-eye"></i>
         <span class="card-views">Consulted {{% NBR_OF_VIEWS %}} times</span>
         </div>
 
-        <div>
+        <div class="sub-header">
         <i aria-hidden="true" class="far fa-folder-open"></i>
         <span class="card-category">{{% CATEGORY %}}</span>
         </div>
@@ -20,7 +20,8 @@ var cardElement = `
         <div class="card-info">
         <div class="info-item">
             <span>
-            <svg x="0px" y="0px" viewBox="0 0 100 100" style="enable-background: new 0 0 100 100" xml:space="preserve"
+            <svg x="0px" y="0px" viewBox="0 0 100 100" style="enable-background: new 0 0 100 100;width: 16px;
+            fill: #4E5652;" xml:space="preserve"
                 width="50">
                 <g>
                 <path
@@ -81,4 +82,38 @@ var cardElement = `
         <div class="card-stars">
         </div>
     </div>
+`;
+
+var filterElement=`<div class="filter-section">
+<div>
+  <label><b>Type of lodging</b> </label>
+  <div>
+    <select name="type-filter" class="type-filter">
+      <option value="Any" selected="">All</option>
+      <option value="Studio">Studio</option>
+      <option value="One bedroom">One bedroom</option>
+      <option value="Two bedrooms">Two bedrooms</option>
+      <option value="Three bedrooms">Three bedrooms</option>
+    </select>
+  </div>
+</div>
+<div>
+  <label><b>Available from</b> </label>
+  <div>
+    <select name="date-filter" class="date-filter">
+      <option value="Any">When</option>
+      <option value="May 2023">May 2023</option>
+      <option value="June 2023">June 2023</option>
+      <option value="July 2023">July 2023</option>
+    </select>
+  </div>
+</div>
+<button id="refine-btn" title="Find your home">Refine</button>
+</div>`;
+
+var paginationElement=`<ul class="pagination" id="search-results-pages">
+<li id="page-1" class="active"><a href="#">1</a></li>
+<li id="page-2"><a href="#">2</a></li>
+<li id="page-3"><a href="#">3</a></li>
+</ul>
 `;
