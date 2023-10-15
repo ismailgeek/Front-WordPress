@@ -10,30 +10,31 @@ Text Domain: fontainebleau-child
 Template: astra
 */
 @media (max-width: 480px) {
-	#card-section .card-item {
-		flex: 0 0 95% !important;
-	 	margin:10px 10px !important;
-  	}
-	#card-section .card-item:last-child{
-		flex: 0 0 95% !important;
-	}
+  #card-section .card-item {
+    flex: 0 0 95% !important;
+    margin: 10px 10px !important;
+  }
+  #card-section .card-item:last-child {
+    flex: 0 0 95% !important;
+  }
 }
 
 .eael-elements-slider-display-table {
-    background: rgb(0 0 0 / 23%);
-    height: 100%;
-    display: flex;
-    align-items: center;
+  background: rgb(0 0 0 / 23%);
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
-.home section#logo-section, .home section#menu-section{
-    display: none;
+.home section#logo-section,
+.home section#menu-section {
+  display: none;
 }
 .fixed-menu {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-	background-color:#fff;
+  background-color: #fff;
 }
 #card-section {
   display: flex;
@@ -41,60 +42,117 @@ Template: astra
 }
 
 #card-section .card-item {
-  	flex: 40%;
-	background-color: #fff;
-    box-shadow: 5px 5px 10px -7px rgba(90.10000000000002, 90.10000000000002, 90.10000000000002, 0.38);
-    border-radius: 15px;
-	margin:0 10px 20px 0;
+  flex: 40%;
+  background-color: #fff;
+  box-shadow: 5px 5px 10px -7px rgba(90.10000000000002, 90.10000000000002, 90.10000000000002, 0.38);
+  border-radius: 15px;
+  margin: 0 10px 20px 0;
 }
-#card-section .card-item:last-child{
-	flex: 0 0 48%;
+#card-section .card-item:last-child {
+  flex: 0 0 48%;
 }
 a.card-audit img {
-    padding: 4px 6px 4px 6px;
-    background-color: #FFFFFF;
-    border-radius: 15px 22px 22px 0px;
-    box-shadow: 10px 10px 10px -2px rgba(0,0,0,0.5);
-	position: absolute;
+  padding: 4px 6px 4px 6px;
+  background-color: #ffffff;
+  border-radius: 15px 22px 22px 0px;
+  box-shadow: 10px 10px 10px -2px rgba(0, 0, 0, 0.5);
+  position: absolute;
 }
 img.card-image {
-    border-radius: 15px 15px 0px 0px;
+  border-radius: 15px 15px 0px 0px;
 }
 h6.card-price {
-    background-color: #D14E1C;
-    position: relative;
-    margin: -28px 95px 15px 25px;
-    padding: 10px 0px 10px 15px;
-    color: #fff;
+  background-color: #d14e1c;
+  position: relative;
+  margin: -28px 95px 15px 25px;
+  padding: 10px 0px 10px 15px;
+  color: #fff;
 }
 a.card-city {
-    font-size: 24px;
-	margin-left:25px;
+  font-size: 24px;
+  margin-left: 25px;
 }
 #card-section > div > h3 {
-    margin: -11px 0 0 0;
+  margin: -11px 0 0 0;
 }
 .sub-header {
-    font-size: 14px;
-	margin-left:25px;
+  font-size: 14px;
+  margin-left: 25px;
 }
 .card-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-	margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 15px;
 }
-h3.card-surface, h3.card-distance, h3.card-bed, h3.card-shower, .info-item span{
-	font-size:16px;
+h3.card-surface,
+h3.card-distance,
+h3.card-bed,
+h3.card-shower,
+.info-item span {
+  font-size: 16px;
 }
 .info-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .card-stars {
-    text-align: center;
-    padding-bottom: 10px;
-    color: #f0ad4e;
+  text-align: center;
+  padding-bottom: 10px;
+  color: #f0ad4e;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: unset !important;
+  flex-wrap: wrap;
+}
+
+.pagination li {
+  list-style: none;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 5px 5px 10px -7px rgba(90.10000000000002, 90.10000000000002, 90.10000000000002, 0.38);
+  border: 1px solid #d14e1c;
+  cursor: pointer;
+  color: #d14e1c;
+}
+
+.pagination li:hover {
+  background-color: #d14e1c;
+  color: #fff !important;
+  transition: all ease-in-out 0.5s;
+}
+
+.pagination li.active {
+  background-color: #d14e1c !important;
+  color: #fff !important;
+}
+
+.filter-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 15px;
+}
+
+#map-section {
+  max-height: 85vh;
+}
+
+.swiper-slide {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0px;
 }

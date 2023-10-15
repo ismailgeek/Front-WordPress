@@ -34,6 +34,10 @@ astra_body_bottom();
 wp_footer();
 ?>
 <!-- APP.js FILE -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXgdJHvY-8st45Qxh9_u_JJvtpLSfSdz4">
+</script>
 <script defer src="/wp-content/themes/fontainebleau-child/js/components.js"></script>
 <script defer src="/wp-content/themes/fontainebleau-child/js/main.js"></script>
 </body>

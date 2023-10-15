@@ -3,7 +3,9 @@ var cardElement = `
         <a class="card-audit" href="{{% URL %}}"><img class="card-audited" src="{{% AUDIT_URL %}}" />
         </a>
         <div>
-        <img class="card-image" height="260" src="{{% IMAGE_URL %}}" />
+        <a href="{{% URL %}}">
+            <img class="card-image" height="260" src="{{% IMAGE_URL %}}" />
+        </a>
         </div>
         <h6 class="card-price">{{% PRICE %}} / month</h6>
         <h3><a class="card-city" href="{{% URL %}}">{{% TITLE %}}</a></h3>
@@ -59,7 +61,7 @@ var cardElement = `
 
         <div class="info-item">
             <span>
-            <i aria-hidden="true" class="fas fa-street-view"></i>
+            <i aria-hidden="true" class="fas fa-street-view distance__js"></i>
             </span>
             <h3 class="card-distance">{{% DISTANCE %}}</h3>
         </div>
@@ -84,7 +86,7 @@ var cardElement = `
     </div>
 `;
 
-var filterElement=`<div class="filter-section">
+var filterElement = `<div class="filter-section">
 <div>
   <label><b>Type of lodging</b> </label>
   <div>
@@ -101,19 +103,81 @@ var filterElement=`<div class="filter-section">
   <label><b>Available from</b> </label>
   <div>
     <select name="date-filter" class="date-filter">
-      <option value="Any">When</option>
-      <option value="May 2023">May 2023</option>
-      <option value="June 2023">June 2023</option>
-      <option value="July 2023">July 2023</option>
+    <option value="Any">When</option>
+    <option value="October 2023">October 2023</option>
+    <option value="November 2023">November 2023</option>
+    <option value="December 2023">December 2023</option>
+    <option value="January 2024">January 2024</option>
+    <option value="February 2024">February 2024</option>
+    <option value="March 2024">March 2024</option>
+    <option value="April 2024">April 2024</option>
+    <option value="May 2024">May 2024</option>
+    <option value="June 2024">June 2024</option>
+    <option value="July 2024">July 2024</option>
+    <option value="August 2024">August 2024</option>
+    <option value="September 2024">September 2024</option>
+    <option value="October 2024">October 2024</option>
+    <option value="November 2024">November 2024</option>
+    <option value="December 2024">December 2024</option>
     </select>
   </div>
 </div>
 <button id="refine-btn" title="Find your home">Refine</button>
 </div>`;
 
-var paginationElement=`<ul class="pagination" id="search-results-pages">
-<li id="page-1" class="active"><a href="#">1</a></li>
-<li id="page-2"><a href="#">2</a></li>
-<li id="page-3"><a href="#">3</a></li>
+var filterElementForSharing = `<div class="filter-section">
+<div>
+  <label><b>Type of lodging</b> </label>
+  <div>
+    <select name="type-filter" class="type-filter">
+      <option value="Two bedrooms">Two bedrooms</option>
+      <option value="Three bedrooms">Three bedrooms</option>
+    </select>
+  </div>
+</div>
+<div>
+  <label><b>Available from</b> </label>
+  <div>
+    <select name="date-filter" class="date-filter">
+    <option value="Any">When</option>
+    <option value="October 2023">October 2023</option>
+    <option value="November 2023">November 2023</option>
+    <option value="December 2023">December 2023</option>
+    <option value="January 2024">January 2024</option>
+    <option value="February 2024">February 2024</option>
+    <option value="March 2024">March 2024</option>
+    <option value="April 2024">April 2024</option>
+    <option value="May 2024">May 2024</option>
+    <option value="June 2024">June 2024</option>
+    <option value="July 2024">July 2024</option>
+    <option value="August 2024">August 2024</option>
+    <option value="September 2024">September 2024</option>
+    <option value="October 2024">October 2024</option>
+    <option value="November 2024">November 2024</option>
+    <option value="December 2024">December 2024</option>
+    </select>
+  </div>
+</div>
+<button id="refine-btn" title="Find your home">Refine</button>
+</div>`;
+
+var paginationElement = `<ul class="pagination" id="search-results-pages">
+{{%CONTENT%}}
 </ul>
+`;
+
+var slider = `
+<!-- Slider main container -->
+<div class="swiper">
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    <!-- Slides -->
+    {{%SLIDERS%}}
+  </div>
+
+  <!-- If we need navigation buttons -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+
+</div>
 `;
