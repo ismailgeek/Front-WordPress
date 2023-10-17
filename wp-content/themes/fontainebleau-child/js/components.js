@@ -1,5 +1,7 @@
 var cardElement = `
     <div class="card-item">
+        <a class="card-sub-date" href="{{% URL %}}"><span>{{% SUB_DATE %}}</span>
+        </a>
         <a class="card-audit" href="{{% URL %}}"><img class="card-audited" src="{{% AUDIT_URL %}}" />
         </a>
         <div>
