@@ -13,10 +13,13 @@ const searchCatalogue = async ({
   houseRef = "",
   type = "Any",
   date = "Any",
+  hou_sub_lea,
 } = {}) => {
   try {
     const response = await fetch(
-      `${url}/_housings.php?page=${page}&order=${order}&limit=${limit}&hou_ref=${houseRef}&typhou_idt=${type}&hou_dat_dis=${date}`,
+      `${url}/_housings.php?page=${page}&order=${order}&limit=${limit}&hou_ref=${houseRef}&typhou_idt=${type}&hou_dat_dis=${date}${
+        hou_sub_lea ? "&hou_sub_lea=" + hou_sub_lea : ""
+      }`,
       {
         method: "GET",
       }
@@ -95,9 +98,10 @@ const renderCards = (data) => {
       .replace("{{% SURFACE %}}", element?.hou_sur)
       .replace("{{% NBR_OF_VIEWS %}}", element?.hou_vis_cnt)
       .replace("{{% PRICE %}}", element?.hou_prx_mon)
+      .replace("{{% SUB_DATE %}}", element?.hou_dat_dis_sub_lea)
       .replaceAll(
         "{{% URL %}}",
-        "/wp-front/property-detail/?reference=" +
+        "/property-detail/?reference=" +
           element?.hou_url +
           "&hou_idt=" +
           element?.hou_idt
@@ -121,6 +125,7 @@ const renderCards = (data) => {
     cardStar.innerHTML = startsContent;
 
     const auditEle = card?.querySelector(".card-audit img");
+    const subleaseEle = card?.querySelector(".card-sub-date");
     const distanceEle = card?.querySelector(".distance__js");
     const km = element?.cty_dst?.split(" ")?.[0];
     if (km > 10) {
@@ -131,10 +136,14 @@ const renderCards = (data) => {
       distanceEle?.classList.remove("fa-car");
     }
 
+    if (element?.hou_sub_lea == "N") {
+      subleaseEle?.remove();
+    }
+
     if (element?.hou_ser != "") {
       auditEle?.setAttribute(
         "src",
-        "/wp-front/wp-content/uploads/2023/10/itemaudited2023.png"
+        "/wp-content/uploads/2023/10/itemaudited2023.png"
       );
     } else {
       auditEle?.remove();
@@ -184,16 +193,16 @@ const handlePaginationevents = () => {
 
       window.scrollTo(0, 250);
       state.page = page;
-      if (location?.pathname == "/wp-front/results-sharing/") {
+      if (location?.pathname == "/results-sharing/") {
         const data = await searchCatalogue({ page, type: "Two bedrooms" });
         renderCards(data);
         initMap(data);
       } else if (
-        location?.pathname == "/wp-front/insead-housing-options-near-fontainebleau/"
+        location?.pathname == "/insead-housing-options-near-fontainebleau/"
       ) {
         const data = await getNearBy({ page });
         renderCards(data);
-      } else if (location?.pathname == "/wp-front/results-studio-8/") {
+      } else if (location?.pathname == "/results-studio-8/") {
         const data = await searchCatalogue({ page, type: 9 });
         renderCards(data);
       } else {
@@ -262,7 +271,9 @@ const renderDetailsPage = (data) => {
       .replace("{{%hou_dsc%}}", item?.hou_dsc)
       .replace("{{%hou_idt%}}", item?.hou_idt)
       .replace("{{%hou_ref%}}", item?.hou_ref)
-      .replace("{{%hou_vis_cnt%}}", item?.hou_vis_cnt);
+      .replace("{{%hou_vis_cnt%}}", item?.hou_vis_cnt)
+      .replace("{{%sub_cat%}}", item?.typhou_lib);
+
     article.innerHTML = content;
 
     // <div class="swiper-slide">Slide 1</div>
@@ -331,6 +342,11 @@ const renderDetailsPage = (data) => {
     distanceEle?.classList.add("fa-street-view");
     distanceEle?.classList.remove("fa-car");
   }
+
+  const subleaseEle = document?.querySelector("#sublease");
+  if (item?.hou_sub_lea == "N") {
+    subleaseEle?.remove();
+  }
 };
 
 // Initialize and display the map
@@ -342,14 +358,21 @@ function makeInfoWindowEvent(map, infowindow, contentString, marker) {
 }
 
 function initMap(data) {
-  const myLatLng = {
-    lat: parseFloat(data?.data?.items?.[0]?.cty_lat),
-    lng: parseFloat(data?.data?.items?.[0]?.cty_lng),
+  let point = {
+    lat: 48.4235486,
+    lng: 2.5993443,
   };
 
+  if (data?.items?.length > 0) {
+    point = {
+      lat: parseFloat(data?.data?.items?.[0]?.cty_lat),
+      lng: parseFloat(data?.data?.items?.[0]?.cty_lng),
+    };
+  }
+
   const map = new google.maps.Map(document.getElementById("map-section"), {
-    center: myLatLng,
-    zoom: 15,
+    center: point,
+    zoom: data?.items?.length > 0 ? 15 : 9,
   });
 
   const infowindow = new google.maps.InfoWindow();
@@ -370,31 +393,42 @@ function initMap(data) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   switch (location.pathname) {
-    case "/wp-front/search-catalogue/":
+    case "/search-catalogue/":
       const data = await searchCatalogue();
       renderCards(data);
       renderPagination(data?.data?.count);
       renderFilters();
       initMap(data);
       break;
-    case "/wp-front/insead-housing-options-near-fontainebleau/":
+    case "/insead-housing-options-near-fontainebleau/":
       const nearBy = await getNearBy();
       renderCards(nearBy);
       renderPagination(nearBy?.data?.count);
       break;
-    case "/wp-front/results-sharing/":
+    case "/results-sharing/":
       const sharingData = await searchCatalogue({ type: "Two bedrooms" });
       renderCards(sharingData);
       renderPagination(sharingData?.data?.count);
       renderFilters(true);
       initMap(sharingData);
       break;
-    case "/wp-front/results-studio-8/":
+    case "/results-studio-8/":
       const studenst = await searchCatalogue({ type: 9 });
       renderCards(studenst);
       renderPagination(studenst?.data?.count);
       break;
-    case "/wp-front/property-detail/":
+    case "/results-sublease/":
+      const subLeases = await searchCatalogue({ hou_sub_lea: "Y" });
+      if (subLeases?.data?.items?.length == 0) {
+        document.querySelector("#text-section").style.display = "block";
+      } else {
+        document.querySelector("#text-section").style.display = "none";
+        renderCards(subLeases);
+        renderPagination(subLeases?.data?.count);
+      }
+      initMap(subLeases);
+      break;
+    case "/property-detail/":
       const params = new URLSearchParams(location.search);
       const id = params?.get("hou_idt");
       if (!id) return;
