@@ -156,7 +156,7 @@ h3.card-shower,
 
 #map-section {
   max-height: 85vh;
-  margin-left: 20px;
+  margin: 0 10px 10px 10px;
 }
 
 #loader-section {

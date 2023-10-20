@@ -29,12 +29,14 @@ function fixed_menu() {
         <script>
           // Function to toggle the fixed menu class
 			function toggleFixedMenu() {
-			  const menu = document.querySelector('#menu-section'); // Replace with your actual menu class
-			  if (window.scrollY > 100) { // Adjust the scroll threshold as needed
+			  const menu = document.querySelector('#menu-section'); 
+				const homeMenu = document.querySelector('.home section#menu-section');
+			  if (window.scrollY > 100) {
 				menu.classList.add('fixed-menu');
-				  menu.style.display = 'block';
+				  homeMenu.style.display = 'block';
 			  } else {
 				menu.classList.remove('fixed-menu');
+				  homeMenu.style.display = 'none';
 			  }
 			}
 

@@ -101,7 +101,7 @@ const renderCards = (data) => {
       .replace("{{% SUB_DATE %}}", element?.hou_dat_dis_sub_lea)
       .replaceAll(
         "{{% URL %}}",
-        "/property-detail/?reference=" +
+        "/wp-front/property-detail/?reference=" +
           element?.hou_url +
           "&hou_idt=" +
           element?.hou_idt
@@ -143,7 +143,7 @@ const renderCards = (data) => {
     if (element?.hou_ser != "") {
       auditEle?.setAttribute(
         "src",
-        "/wp-content/uploads/2023/10/itemaudited2023.png"
+        "/wp-front/wp-content/uploads/2023/10/itemaudited2023.png"
       );
     } else {
       auditEle?.remove();
@@ -193,12 +193,12 @@ const handlePaginationevents = () => {
 
       window.scrollTo(0, 250);
       state.page = page;
-      if (location?.pathname == "/results-sharing/") {
+      if (location?.pathname == "/wp-front/results-sharing/") {
         const data = await searchCatalogue({ page, type: "Two bedrooms" });
         renderCards(data);
         initMap(data);
       } else if (
-        location?.pathname == "/insead-housing-options-near-fontainebleau/"
+        location?.pathname == "/wp-front/insead-housing-options-near-fontainebleau/"
       ) {
         const data = await getNearBy({ page });
         renderCards(data);
@@ -393,31 +393,31 @@ function initMap(data) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   switch (location.pathname) {
-    case "/search-catalogue/":
+    case "/wp-front/search-catalogue/":
       const data = await searchCatalogue();
       renderCards(data);
       renderPagination(data?.data?.count);
       renderFilters();
       initMap(data);
       break;
-    case "/insead-housing-options-near-fontainebleau/":
+    case "/wp-front/insead-housing-options-near-fontainebleau/":
       const nearBy = await getNearBy();
       renderCards(nearBy);
       renderPagination(nearBy?.data?.count);
       break;
-    case "/results-sharing/":
+    case "/wp-front/results-sharing/":
       const sharingData = await searchCatalogue({ type: "Two bedrooms" });
       renderCards(sharingData);
       renderPagination(sharingData?.data?.count);
       renderFilters(true);
       initMap(sharingData);
       break;
-    case "/results-studio-8/":
+    case "/wp-front/results-studio-8/":
       const studenst = await searchCatalogue({ type: 9 });
       renderCards(studenst);
       renderPagination(studenst?.data?.count);
       break;
-    case "/results-sublease/":
+    case "/wp-front/results-sublease/":
       const subLeases = await searchCatalogue({ hou_sub_lea: "Y" });
       if (subLeases?.data?.items?.length == 0) {
         document.querySelector("#text-section").style.display = "block";
@@ -428,7 +428,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       initMap(subLeases);
       break;
-    case "/property-detail/":
+    case "/wp-front/property-detail/":
       const params = new URLSearchParams(location.search);
       const id = params?.get("hou_idt");
       if (!id) return;
