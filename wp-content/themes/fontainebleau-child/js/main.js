@@ -422,6 +422,27 @@ function initMap(data) {
   });
 }
 
+function renderCharges(target, totalCharges, data, isExcluded = false) {
+  const tbody = target.querySelector("tbody");
+  const [row1, row2] = tbody.querySelectorAll("tr");
+  const clonedTotal = row2?.cloneNode(true);
+
+  tbody.innerHTML = "";
+
+  data?.forEach((item) => {
+    const clonedItem = row1?.cloneNode(true);
+    clonedItem.querySelector("td:nth-child(1) > div > div").innerHTML =
+      item?.nam;
+    clonedItem.querySelector("td:nth-child(2) > div > div").innerHTML =
+      item?.mnt;
+    tbody.append(clonedItem);
+  });
+  if (isExcluded) return;
+  clonedTotal.querySelector("td:nth-child(2) > div > div > b").innerHTML =
+    totalCharges;
+  tbody.append(clonedTotal);
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   switch (location.pathname) {
     case "/search-catalogue/":
@@ -473,18 +494,54 @@ document.addEventListener("DOMContentLoaded", async () => {
       const propertyDetails = await findById({
         hou_idt: params?.get("hou_idt"),
       });
-      const chargesHTML = await getCharges(params?.get("hou_idt"));
+      const { data: charges, isSuccess } = await getCharges(
+        params?.get("hou_idt")
+      );
 
-      console.log("chargesHTML", chargesHTML);
+      const noChargeContainer = document.querySelector("#nocharge");
+      const excludedContainer = document.querySelector("#excluded");
+      const includedFixedContainer = document.querySelector("#included-fixed");
+      const includedProviContainer = document.querySelector("#included-provi");
 
-      // const chargerContainer = document.querySelector("#charges-container");
-
-      // if (chargerContainer) {
-      //   chargerContainer.innerHTML = chargesHTML?.data;
-      //   chargerContainer.querySelector("hr")?.remove();
-      // chargerContainer.querySelector("img").src =
-      //   "https://fontainebleau.city-junction.com/images/YOUTUBE-CHARGE-EXPLAINED.png";
-      // }
+      if (Object.keys(charges)?.length == 0) {
+        noChargeContainer.style.display = "block";
+        excludedContainer.style.display = "none";
+        includedFixedContainer.style.display = "none";
+        includedProviContainer.style.display = "none";
+      } else {
+        noChargeContainer.style.display = "none";
+        if (charges?.excluded) {
+          excludedContainer.style.display = "block";
+          renderCharges(
+            excludedContainer,
+            propertyDetails?.data?.items?.[0]?.hou_exp_pro,
+            charges?.excluded,
+            true
+          );
+        } else {
+          excludedContainer.style.display = "none";
+        }
+        if (charges?.forfait) {
+          includedFixedContainer.style.display = "block";
+          renderCharges(
+            includedFixedContainer,
+            propertyDetails?.data?.items?.[0]?.hou_exp_for,
+            charges?.forfait
+          );
+        } else {
+          includedFixedContainer.style.display = "none";
+        }
+        if (charges?.provision) {
+          includedProviContainer.style.display = "block";
+          renderCharges(
+            includedProviContainer,
+            propertyDetails?.data?.items?.[0]?.hou_exp_pro,
+            charges?.provision
+          );
+        } else {
+          includedProviContainer.style.display = "none";
+        }
+      }
 
       article.style.display = "block";
       loaderSection.style.display = "none";
