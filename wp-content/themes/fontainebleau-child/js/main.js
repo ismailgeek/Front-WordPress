@@ -1,5 +1,6 @@
 // URL
 const url = "https://fontainebleau.city-junction.com";
+const chargesUrl = `${url}/_charges_api.php`;
 
 const state = {
   page: 1,
@@ -82,6 +83,24 @@ const findById = async ({ hou_idt = "", limit = 1, clear = 1 } = {}) => {
   }
 };
 
+const getCharges = async (hou_idt) => {
+  try {
+    const response = await fetch(`${chargesUrl}?hou_idt=${hou_idt}`, {
+      method: "GET",
+    });
+    const json = await response.json();
+    return {
+      isSuccess: true,
+      data: json,
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      data: error,
+    };
+  }
+};
+
 // UI Helpers
 const renderCards = (data) => {
   const parser = new DOMParser();
@@ -101,7 +120,7 @@ const renderCards = (data) => {
       .replace("{{% SUB_DATE %}}", element?.hou_dat_dis_sub_lea)
       .replaceAll(
         "{{% URL %}}",
-        "/wp-front/property-detail/?reference=" +
+        "/property-detail/?reference=" +
           element?.hou_url +
           "&hou_idt=" +
           element?.hou_idt
@@ -143,7 +162,7 @@ const renderCards = (data) => {
     if (element?.hou_ser != "") {
       auditEle?.setAttribute(
         "src",
-        "/wp-front/wp-content/uploads/2023/10/itemaudited2023.png"
+        "/wp-content/uploads/2023/10/itemaudited2023.png"
       );
     } else {
       auditEle?.remove();
@@ -193,12 +212,12 @@ const handlePaginationevents = () => {
 
       window.scrollTo(0, 250);
       state.page = page;
-      if (location?.pathname == "/wp-front/results-sharing/") {
+      if (location?.pathname == "/results-sharing/") {
         const data = await searchCatalogue({ page, type: "Two bedrooms" });
         renderCards(data);
         initMap(data);
       } else if (
-        location?.pathname == "/wp-front/insead-housing-options-near-fontainebleau/"
+        location?.pathname == "/insead-housing-options-near-fontainebleau/"
       ) {
         const data = await getNearBy({ page });
         renderCards(data);
@@ -347,6 +366,18 @@ const renderDetailsPage = (data) => {
   if (item?.hou_sub_lea == "N") {
     subleaseEle?.remove();
   }
+
+  const parser = new DOMParser();
+  const cardStar = document?.querySelector(".elementor-star-rating");
+  let startsContent = "";
+
+  const stars = parser.parseFromString(item?.hou_sta_lst, "text/html");
+  nbrOfStars = stars.querySelectorAll("span")?.length;
+
+  for (let index = 0; index < nbrOfStars; index++) {
+    startsContent += '<i class="elementor-star-full"></i>';
+  }
+  cardStar.innerHTML = startsContent;
 };
 
 // Initialize and display the map
@@ -393,31 +424,31 @@ function initMap(data) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   switch (location.pathname) {
-    case "/wp-front/search-catalogue/":
+    case "/search-catalogue/":
       const data = await searchCatalogue();
       renderCards(data);
       renderPagination(data?.data?.count);
       renderFilters();
       initMap(data);
       break;
-    case "/wp-front/insead-housing-options-near-fontainebleau/":
+    case "/insead-housing-options-near-fontainebleau/":
       const nearBy = await getNearBy();
       renderCards(nearBy);
       renderPagination(nearBy?.data?.count);
       break;
-    case "/wp-front/results-sharing/":
+    case "/results-sharing/":
       const sharingData = await searchCatalogue({ type: "Two bedrooms" });
       renderCards(sharingData);
       renderPagination(sharingData?.data?.count);
       renderFilters(true);
       initMap(sharingData);
       break;
-    case "/wp-front/results-studio-8/":
+    case "/results-studio-8/":
       const studenst = await searchCatalogue({ type: 9 });
       renderCards(studenst);
       renderPagination(studenst?.data?.count);
       break;
-    case "/wp-front/results-sublease/":
+    case "/results-sublease/":
       const subLeases = await searchCatalogue({ hou_sub_lea: "Y" });
       if (subLeases?.data?.items?.length == 0) {
         document.querySelector("#text-section").style.display = "block";
@@ -428,7 +459,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       initMap(subLeases);
       break;
-    case "/wp-front/property-detail/":
+    case "/property-detail/":
       const params = new URLSearchParams(location.search);
       const id = params?.get("hou_idt");
       if (!id) return;
@@ -442,6 +473,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       const propertyDetails = await findById({
         hou_idt: params?.get("hou_idt"),
       });
+      const chargesHTML = await getCharges(params?.get("hou_idt"));
+
+      console.log("chargesHTML", chargesHTML);
+
+      // const chargerContainer = document.querySelector("#charges-container");
+
+      // if (chargerContainer) {
+      //   chargerContainer.innerHTML = chargesHTML?.data;
+      //   chargerContainer.querySelector("hr")?.remove();
+      // chargerContainer.querySelector("img").src =
+      //   "https://fontainebleau.city-junction.com/images/YOUTUBE-CHARGE-EXPLAINED.png";
+      // }
+
       article.style.display = "block";
       loaderSection.style.display = "none";
       renderDetailsPage(propertyDetails);
