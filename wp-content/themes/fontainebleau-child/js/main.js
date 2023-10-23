@@ -259,6 +259,7 @@ const handleFilterEvents = () => {
     const date = dateFilter?.value;
     const price = priceFilter?.value;
     const distance = distanceFilter?.value;
+    
     const data = await searchCatalogue({
       type,
       date,
