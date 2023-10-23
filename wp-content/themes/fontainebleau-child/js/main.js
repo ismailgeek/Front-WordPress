@@ -15,12 +15,13 @@ const searchCatalogue = async ({
   type = "Any",
   date = "Any",
   hou_sub_lea,
+  cty_dst = "Any",
 } = {}) => {
   try {
     const response = await fetch(
       `${url}/_housings.php?page=${page}&order=${order}&limit=${limit}&hou_ref=${houseRef}&typhou_idt=${type}&hou_dat_dis=${date}${
         hou_sub_lea ? "&hou_sub_lea=" + hou_sub_lea : ""
-      }`,
+      }&cty_dst=${cty_dst}`,
       {
         method: "GET",
       }
@@ -246,6 +247,8 @@ const renderFilters = (forSharing = false) => {
 const handleFilterEvents = () => {
   const typeFilter = document.querySelector(".type-filter");
   const dateFilter = document.querySelector(".date-filter");
+  const priceFilter = document.querySelector(".price-filter");
+  const distanceFilter = document.querySelector(".distance-filter");
   const refineBtn = document.querySelector("#refine-btn");
 
   if (!typeFilter || !dateFilter || !refineBtn) return;
@@ -254,7 +257,14 @@ const handleFilterEvents = () => {
     e.stopPropagation();
     const type = typeFilter?.value;
     const date = dateFilter?.value;
-    const data = await searchCatalogue({ type, date });
+    const price = priceFilter?.value;
+    const distance = distanceFilter?.value;
+    const data = await searchCatalogue({
+      type,
+      date,
+      order: price,
+      cty_dst: distance,
+    });
     renderCards(data);
     renderPagination(data?.data?.count);
     initMap(data);
@@ -494,6 +504,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const propertyDetails = await findById({
         hou_idt: params?.get("hou_idt"),
       });
+
       const { data: charges, isSuccess } = await getCharges(
         params?.get("hou_idt")
       );

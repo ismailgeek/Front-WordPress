@@ -164,8 +164,8 @@ var filterElementForSharing = `<div class="filter-section">
   <label><b>Price</b> </label>
   <div>
     <select name="price-filter" class="price-filter">
-      <option value="Ascending Price">Ascending Price</option>
-      <option value="Descending Price">Descending Price</option>
+      <option value="H.hou_prx_mon ASC">Ascending Price</option>
+      <option value="H.hou_prx_mon DESC">Descending Price</option>
     </select>
   </div>
 </div>
@@ -173,10 +173,11 @@ var filterElementForSharing = `<div class="filter-section">
   <label><b>How Far ?</b> </label>
   <div>
     <select name="distance-filter" class="distance-filter">
+      <option value="Any">Any</option>
       <option value="INSEAD - 1 km">INSEAD - 1 km</option>
       <option value="INSEAD 1 to 2 km">INSEAD 1 to 2 km</option>
-      <option value="INSEAD 1 to 2 km">INSEAD 2 to 3 km</option>
-      <option value="INSEAD 1 to 2 km">INSEAD + 3 km</option>
+      <option value="INSEAD 2 to 3 km">INSEAD 2 to 3 km</option>
+      <option value="INSEAD + 3 km">INSEAD + 3 km</option>
     </select>
   </div>
 </div>
