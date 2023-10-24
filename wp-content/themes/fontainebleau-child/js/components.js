@@ -88,7 +88,85 @@ var cardElement = `
     </div>
 `;
 
-var filterElement = `<div class="filter-section">
+var filterSection = `<div class="filter-section">{{%CHILDREN%}}</div>`;
+var refineButton = `<button id="refine-btn" title="Find your home">Refine</button>`;
+
+var priceFilter = `
+<div>
+  <label><b>Price</b> </label>
+  <div>
+    <select name="price-filter" class="price-filter">
+      <option value="H.hou_prx_mon ASC">Ascending Price</option>
+      <option value="H.hou_prx_mon DESC">Descending Price</option>
+    </select>
+  </div>
+</div>
+`;
+var distanceFilter = `
+<div>
+  <label><b>How Far ?</b> </label>
+  <div>
+    <select name="distance-filter" class="distance-filter">
+      <option value="Any">Any</option>
+      <option value="INSEAD - 1 km">INSEAD - 1 km</option>
+      <option value="INSEAD 1 to 2 km">INSEAD 1 to 2 km</option>
+      <option value="INSEAD 2 to 3 km">INSEAD 2 to 3 km</option>
+      <option value="INSEAD + 3 km">INSEAD + 3 km</option>
+    </select>
+  </div>
+</div>
+`;
+var dateFilter = `
+<div>
+  <label><b>Available from</b> </label>
+  <div>
+    <select name="date-filter" class="date-filter">
+    <option value="Any">When</option>
+    <option value="October 2023">October 2023</option>
+    <option value="November 2023">November 2023</option>
+    <option value="December 2023">December 2023</option>
+    <option value="January 2024">January 2024</option>
+    <option value="February 2024">February 2024</option>
+    <option value="March 2024">March 2024</option>
+    <option value="April 2024">April 2024</option>
+    <option value="May 2024">May 2024</option>
+    <option value="June 2024">June 2024</option>
+    <option value="July 2024">July 2024</option>
+    <option value="August 2024">August 2024</option>
+    <option value="September 2024">September 2024</option>
+    <option value="October 2024">October 2024</option>
+    <option value="November 2024">November 2024</option>
+    <option value="December 2024">December 2024</option>
+    </select>
+  </div>
+</div>
+`;
+var distanceFilter = `
+<div>
+  <label><b>How Far ?</b> </label>
+  <div>
+    <select name="distance-filter" class="distance-filter">
+      <option value="Any">Any</option>
+      <option value="INSEAD - 1 km">INSEAD - 1 km</option>
+      <option value="INSEAD 1 to 2 km">INSEAD 1 to 2 km</option>
+      <option value="INSEAD 2 to 3 km">INSEAD 2 to 3 km</option>
+      <option value="INSEAD + 3 km">INSEAD + 3 km</option>
+    </select>
+  </div>
+</div>
+`;
+var typeForSharing = `
+<div>
+  <label><b>Type of lodging</b> </label>
+  <div>
+    <select name="type-filter" class="type-filter">
+      <option value="Two bedrooms">Two bedrooms</option>
+      <option value="Three bedrooms">Three bedrooms</option>
+    </select>
+  </div>
+</div>
+`;
+var type = `
 <div>
   <label><b>Type of lodging</b> </label>
   <div>
@@ -96,6 +174,44 @@ var filterElement = `<div class="filter-section">
       <option value="Any" selected="">All</option>
       <option value="Studio">Studio</option>
       <option value="One bedroom">One bedroom</option>
+      <option value="Two bedrooms">Two bedrooms</option>
+      <option value="Three bedrooms">Three bedrooms</option>
+    </select>
+  </div>
+</div>
+`;
+
+var filterElement = `<div class="filter-section">
+<div>
+  <label><b>Price</b> </label>
+  <div>
+    <select name="price-filter" class="price-filter">
+      <option value="H.hou_prx_mon ASC">Ascending Price</option>
+      <option value="H.hou_prx_mon DESC">Descending Price</option>
+    </select>
+  </div>
+</div>
+<div>
+  <label><b>How Far ?</b> </label>
+  <div>
+    <select name="distance-filter" class="distance-filter">
+      <option value="Any">Any</option>
+      <option value="INSEAD - 1 km">INSEAD - 1 km</option>
+      <option value="INSEAD 1 to 2 km">INSEAD 1 to 2 km</option>
+      <option value="INSEAD 2 to 3 km">INSEAD 2 to 3 km</option>
+      <option value="INSEAD + 3 km">INSEAD + 3 km</option>
+    </select>
+  </div>
+</div>
+<button id="refine-btn" title="Find your home">Refine</button>
+</div>
+`;
+
+var filterElementForSharing = `<div class="filter-section">
+<div>
+  <label><b>Type of lodging</b> </label>
+  <div>
+    <select name="type-filter" class="type-filter">
       <option value="Two bedrooms">Two bedrooms</option>
       <option value="Three bedrooms">Three bedrooms</option>
     </select>
@@ -124,14 +240,38 @@ var filterElement = `<div class="filter-section">
     </select>
   </div>
 </div>
+<div>
+  <label><b>Price</b> </label>
+  <div>
+    <select name="price-filter" class="price-filter">
+      <option value="H.hou_prx_mon ASC">Ascending Price</option>
+      <option value="H.hou_prx_mon DESC">Descending Price</option>
+    </select>
+  </div>
+</div>
+<div>
+  <label><b>How Far ?</b> </label>
+  <div>
+    <select name="distance-filter" class="distance-filter">
+      <option value="Any">Any</option>
+      <option value="INSEAD - 1 km">INSEAD - 1 km</option>
+      <option value="INSEAD 1 to 2 km">INSEAD 1 to 2 km</option>
+      <option value="INSEAD 2 to 3 km">INSEAD 2 to 3 km</option>
+      <option value="INSEAD + 3 km">INSEAD + 3 km</option>
+    </select>
+  </div>
+</div>
 <button id="refine-btn" title="Find your home">Refine</button>
 </div>`;
 
-var filterElementForSharing = `<div class="filter-section">
+var filterElementForSearchCataglogue = `<div class="filter-section">
 <div>
   <label><b>Type of lodging</b> </label>
   <div>
     <select name="type-filter" class="type-filter">
+      <option value="Any" selected="">All</option>
+      <option value="Studio">Studio</option>
+      <option value="One bedroom">One bedroom</option>
       <option value="Two bedrooms">Two bedrooms</option>
       <option value="Three bedrooms">Three bedrooms</option>
     </select>

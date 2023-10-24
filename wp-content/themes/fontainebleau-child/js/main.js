@@ -11,11 +11,11 @@ const searchCatalogue = async ({
   page = 1,
   limit = 9,
   order = "H.hou_prx_mon ASC",
+  cty_dst = "Any",
   houseRef = "",
   type = "Any",
   date = "Any",
   hou_sub_lea,
-  cty_dst = "Any",
 } = {}) => {
   try {
     const response = await fetch(
@@ -38,15 +38,17 @@ const searchCatalogue = async ({
     };
   }
 };
+
 const getNearBy = async ({
   page = 1,
   limit = 9,
   order = "H.hou_prx_mon ASC",
+  cty_dst = "Any",
   houseRef = "",
 } = {}) => {
   try {
     const response = await fetch(
-      `${url}/_housing-outside-fontainebleau.php?page=${page}&order=${order}&limit=${limit}&hou_ref=${houseRef}`,
+      `${url}/_housing-outside-fontainebleau.php?page=${page}&order=${order}&limit=${limit}&hou_ref=${houseRef}&cty_dst=${cty_dst}`,
       {
         method: "GET",
       }
@@ -63,6 +65,7 @@ const getNearBy = async ({
     };
   }
 };
+
 const findById = async ({ hou_idt = "", limit = 1, clear = 1 } = {}) => {
   try {
     const response = await fetch(
@@ -239,7 +242,7 @@ const renderFilters = (forSharing = false) => {
   if (!filterContainer) return;
 
   filterContainer.innerHTML = forSharing
-    ? filterElementForSharing
+    ? location.pathname == "/search-catalogue/" ? filterElementForSearchCataglogue : filterElementForSharing
     : filterElement;
   handleFilterEvents();
 };
@@ -251,24 +254,49 @@ const handleFilterEvents = () => {
   const distanceFilter = document.querySelector(".distance-filter");
   const refineBtn = document.querySelector("#refine-btn");
 
-  if (!typeFilter || !dateFilter || !refineBtn) return;
-
   refineBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
     const type = typeFilter?.value;
     const date = dateFilter?.value;
     const price = priceFilter?.value;
     const distance = distanceFilter?.value;
-    
-    const data = await searchCatalogue({
-      type,
-      date,
-      order: price,
-      cty_dst: distance,
-    });
-    renderCards(data);
-    renderPagination(data?.data?.count);
-    initMap(data);
+
+    switch (location.pathname) {
+      case "/search-catalogue/":
+      case "/results-sharing/":
+        const data = await searchCatalogue({
+          type,
+          date,
+          order: price,
+          cty_dst: distance,
+        });
+        renderCards(data);
+        renderPagination(data?.data?.count);
+        initMap(data);
+        break;
+      case "/insead-housing-options-near-fontainebleau/":
+        const nearBy = await getNearBy({
+          order: price,
+          cty_dst: distance,
+        });
+        renderCards(nearBy);
+        renderPagination(nearBy?.data?.count);
+        break;
+      case "/results-studio-8/":
+      case "/results-sublease/":
+        const studenst = await searchCatalogue({
+          type,
+          date,
+          order: price,
+          cty_dst: distance,
+        });
+        renderCards(studenst);
+        renderPagination(studenst?.data?.count);
+        break;
+      default:
+        console.log("Nothing to filter");
+        break;
+    }
   });
 };
 
@@ -460,12 +488,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = await searchCatalogue();
       renderCards(data);
       renderPagination(data?.data?.count);
-      renderFilters();
+      renderFilters(true);
       initMap(data);
       break;
     case "/insead-housing-options-near-fontainebleau/":
       const nearBy = await getNearBy();
       renderCards(nearBy);
+      renderFilters(false);
       renderPagination(nearBy?.data?.count);
       break;
     case "/results-sharing/":
@@ -478,6 +507,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     case "/results-studio-8/":
       const studenst = await searchCatalogue({ type: 9 });
       renderCards(studenst);
+      renderFilters(false);
       renderPagination(studenst?.data?.count);
       break;
     case "/results-sublease/":
@@ -487,6 +517,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         document.querySelector("#text-section").style.display = "none";
         renderCards(subLeases);
+        renderFilters(false);
         renderPagination(subLeases?.data?.count);
       }
       initMap(subLeases);
