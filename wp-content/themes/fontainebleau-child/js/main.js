@@ -471,10 +471,10 @@ function renderCharges(target, totalCharges, data, isExcluded = false) {
   tbody.innerHTML = "";
 
   data?.forEach((item) => {
-    const clonedItem = row1?.cloneNode(true);
-    clonedItem.querySelector("td:nth-child(1) > div > div").innerHTML =
+    const clonedItem = clonedTotal?.cloneNode(true);
+    clonedItem.querySelector("td:nth-child(1) > div > div > b").innerHTML =
       item?.nam;
-    clonedItem.querySelector("td:nth-child(2) > div > div").innerHTML =
+    clonedItem.querySelector("td:nth-child(2) > div > div > b").innerHTML =
       item?.mnt;
     tbody.append(clonedItem);
   });
