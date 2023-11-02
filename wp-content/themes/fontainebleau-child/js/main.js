@@ -1,9 +1,14 @@
 // URL
-const url = "https://fontainebleau.city-junction.com";
+const url = "https://admin.fontainebleau.city-junction.com/Admin/api";
 const chargesUrl = `${url}/_charges_api.php`;
 
 const state = {
   page: 1,
+};
+
+const headers = {
+  Authorization: "Basic " + btoa("vc2023:LHWbUfD#N*5Q?h$-"),
+  "Access-Control-Allow-Origin": "*",
 };
 
 // Services
@@ -24,6 +29,7 @@ const searchCatalogue = async ({
       }&cty_dst=${cty_dst}`,
       {
         method: "GET",
+        headers,
       }
     );
     const json = await response.json();
@@ -51,6 +57,7 @@ const getNearBy = async ({
       `${url}/_housing-outside-fontainebleau.php?page=${page}&order=${order}&limit=${limit}&hou_ref=${houseRef}&cty_dst=${cty_dst}`,
       {
         method: "GET",
+        headers,
       }
     );
     const json = await response.json();
@@ -72,6 +79,7 @@ const findById = async ({ hou_idt = "", limit = 1, clear = 1 } = {}) => {
       `${url}/_housings.php?hou_idt=${hou_idt}&clear=${clear}&limit=${limit}`,
       {
         method: "GET",
+        headers,
       }
     );
     const json = await response.json();
@@ -91,6 +99,7 @@ const getCharges = async (hou_idt) => {
   try {
     const response = await fetch(`${chargesUrl}?hou_idt=${hou_idt}`, {
       method: "GET",
+      headers,
     });
     const json = await response.json();
     return {
